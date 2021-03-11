@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'views/home/home.dart';
+import 'views/home/homeView.dart';
 import 'views/settings/themeChanger.dart';
 import 'views/settings/themes.dart';
 
