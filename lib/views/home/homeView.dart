@@ -11,9 +11,9 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   var trainings = [
-    {"id": "tr-1", "title": "title1", "desc": "description 1"},
-    {"id": "tr-2", "title": "title2", "desc": "description 2"},
-    {"id": "tr-3", "title": "title3", "desc": "description 3"}
+    {"id": "tr-1", "title": "training 1", "desc": "description 1"},
+    {"id": "tr-2", "title": "training 2", "desc": "description 2"},
+    {"id": "tr-3", "title": "training 3", "desc": "description 3"}
   ];
 
   @override
