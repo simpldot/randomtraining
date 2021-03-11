@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'views/home/home.dart';
+import 'views/settings/themeChanger.dart';
+import 'views/settings/themes.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,72 +11,22 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return ChangeNotifierProvider<ThemeChanger>(
+      create: (context) => ThemeChanger(getThemeData('defaultDark')),
+      child: MaterialAppWithTheme(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class MaterialAppWithTheme extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(
-            'RANDOM TRAINING',
-            style: TextStyle(
-              fontFamily: 'SulphurPoint',
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {},
-            ),
-          ]),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+    final theme = Provider.of<ThemeChanger>(context);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeView(),
+      theme: theme.getTheme(),
     );
   }
 }
