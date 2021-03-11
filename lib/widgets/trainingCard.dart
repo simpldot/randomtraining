@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/training/trainingView.dart';
 
 Widget trainingCard(BuildContext context, Map<String, String> data) {
@@ -12,8 +13,11 @@ Widget trainingCard(BuildContext context, Map<String, String> data) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => TrainingView(id: data["id"])));
         },
-        title: Text(data["title"]),
-        subtitle: Text(data["desc"]),
+        title: Hero(
+            tag: data["title"],
+            child: Material(child: Text(data["title"], style: smallHeading))),
+        subtitle:
+            Hero(tag: data["desc"], child: Material(child: Text(data["desc"]))),
         trailing: Icon(Icons.drag_handle_rounded),
       ),
     ),

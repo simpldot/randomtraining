@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/widgets/trainingCard.dart';
 
 class HomeView extends StatefulWidget {
@@ -22,14 +23,7 @@ class _HomeViewState extends State<HomeView> {
         automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text(
-          'RANDOM TRAINING',
-          style: TextStyle(
-            fontFamily: 'SulphurPoint',
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-          ),
-        ),
+        title: Text('RANDOM TRAINING', style: heading),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
