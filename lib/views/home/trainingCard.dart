@@ -14,10 +14,10 @@ Widget trainingCard(BuildContext context, Map<String, String> data) {
               builder: (BuildContext context) => TrainingView(id: data["id"])));
         },
         title: Hero(
-            tag: data["title"],
+            tag: data["id"] + "t",
             child: Material(child: Text(data["title"], style: smallHeading))),
-        subtitle:
-            Hero(tag: data["desc"], child: Material(child: Text(data["desc"]))),
+        subtitle: Hero(
+            tag: data["id"] + "d", child: Material(child: Text(data["desc"]))),
         trailing: Icon(Icons.drag_handle_rounded),
       ),
     ),

@@ -39,13 +39,13 @@ class _TrainingViewState extends State<TrainingView> {
         title: Column(
           children: [
             Hero(
-              tag: training["title"],
+              tag: widget.id + "t",
               child: Material(
                 child: Text(training["title"], style: heading),
               ),
             ),
             Hero(
-              tag: training["desc"],
+              tag: widget.id + "d",
               child: Material(
                 child: Text(
                   training["desc"],
