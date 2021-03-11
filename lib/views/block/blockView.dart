@@ -16,11 +16,6 @@ class _BlockViewState extends State<BlockView> {
     "bl-3": {"title": "block 3", "desc": "description 3"}
   };
   var training;
-  @override
-  void initState() {
-    super.initState();
-    training = data[widget.id];
-  }
 
   var focusItem = 0;
 
@@ -44,6 +39,13 @@ class _BlockViewState extends State<BlockView> {
       "checked": false
     }
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    training = data[widget.id];
+    exercises.shuffle();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,18 +109,11 @@ class _BlockViewState extends State<BlockView> {
   }
 
   void _setFocusItem() {
-    int focusItem = 0;
-    while (focusItem < exercises.length) {
-      if (!exercises[focusItem]["checked"]) {
-        setState(() {
-          this.focusItem = focusItem;
-        });
-        return;
-      }
-      focusItem++;
-    }
     setState(() {
-      this.focusItem = -1;
+      this.focusItem = exercises
+          .map((exercise) => exercise["checked"])
+          .toList()
+          .indexOf(false);
     });
   }
 }
