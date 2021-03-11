@@ -39,9 +39,14 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: ReorderableListView.builder(
           onReorder: _onReorder,
-          padding: EdgeInsets.all(15),
           itemCount: cards.length,
           itemBuilder: (context, i) => trainingCard(context, cards[i])),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text('new Training'),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
