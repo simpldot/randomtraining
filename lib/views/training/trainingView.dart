@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:randomtraining/shared/textStyles.dart';
+import 'package:randomtraining/views/training/blockCard.dart';
 
 class TrainingView extends StatefulWidget {
   final String id;
@@ -10,17 +11,23 @@ class TrainingView extends StatefulWidget {
 }
 
 class _TrainingViewState extends State<TrainingView> {
-  var cards = {
-    "1": {"title": "title1", "desc": "description 1"},
-    "2": {"title": "title2", "desc": "description 2"},
-    "3": {"title": "title3", "desc": "description 3"}
+  var data = {
+    "tr-1": {"title": "training 1", "desc": "description 1"},
+    "tr-2": {"title": "training 2", "desc": "description 2"},
+    "tr-3": {"title": "training 3", "desc": "description 3"}
   };
   var training;
   @override
   void initState() {
     super.initState();
-    training = cards[widget.id];
+    training = data[widget.id];
   }
+
+  var blocks = [
+    {"id": "bl-1", "title": "block 1", "desc": "description 1"},
+    {"id": "bl-2", "title": "block 2", "desc": "description 2"},
+    {"id": "bl-3", "title": "block 3", "desc": "description 3"}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,16 @@ class _TrainingViewState extends State<TrainingView> {
             )
           ],
         ),
+        actions: [
+          IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+        ],
       ),
-      body: Container(),
+      body: ReorderableListView.builder(
+        padding: EdgeInsets.only(top: 8),
+        onReorder: _onReorder,
+        itemCount: blocks.length,
+        itemBuilder: (context, i) => blockCard(context, blocks[i]),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: Text('new Block'),
@@ -57,5 +72,15 @@ class _TrainingViewState extends State<TrainingView> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      var item = blocks.removeAt(oldIndex);
+      blocks.insert(newIndex, item);
+    });
   }
 }
