@@ -11,6 +11,7 @@ ThemeData getThemeData(String themeName) {
         accentColor: primaryColor,
         canvasColor: Colors.transparent,
         scaffoldBackgroundColor: backgroundColor,
+        toggleableActiveColor: primaryColor,
       );
       break;
     default:
