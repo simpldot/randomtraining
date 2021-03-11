@@ -9,6 +9,7 @@ ThemeData getThemeData(String themeName) {
         brightness: Brightness.dark,
         primaryColor: primaryColor,
         accentColor: primaryColor,
+        canvasColor: Colors.transparent,
         scaffoldBackgroundColor: backgroundColor,
       );
       break;
