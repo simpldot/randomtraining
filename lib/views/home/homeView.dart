@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:randomtraining/shared/textStyles.dart';
-import 'package:randomtraining/widgets/trainingCard.dart';
+import 'package:randomtraining/views/home/trainingCard.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -10,10 +10,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  var cards = [
-    {"id": "1", "title": "title1", "desc": "description 1"},
-    {"id": "2", "title": "title2", "desc": "description 2"},
-    {"id": "3", "title": "title3", "desc": "description 3"}
+  var trainings = [
+    {"id": "tr-1", "title": "title1", "desc": "description 1"},
+    {"id": "tr-2", "title": "title2", "desc": "description 2"},
+    {"id": "tr-3", "title": "title3", "desc": "description 3"}
   ];
 
   @override
@@ -32,9 +32,10 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: ReorderableListView.builder(
-          onReorder: _onReorder,
-          itemCount: cards.length,
-          itemBuilder: (context, i) => trainingCard(context, cards[i])),
+        onReorder: _onReorder,
+        itemCount: trainings.length,
+        itemBuilder: (context, i) => trainingCard(context, trainings[i]),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: Text('new Training'),
@@ -49,8 +50,8 @@ class _HomeViewState extends State<HomeView> {
       if (newIndex > oldIndex) {
         newIndex -= 1;
       }
-      var item = cards.removeAt(oldIndex);
-      cards.insert(newIndex, item);
+      var item = trainings.removeAt(oldIndex);
+      trainings.insert(newIndex, item);
     });
   }
 }
