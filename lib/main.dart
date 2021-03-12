@@ -11,8 +11,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ThemeChanger>(
-      create: (context) => ThemeChanger(getThemeData('defaultDark')),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeChanger>(
+          create: (context) => ThemeChanger(getThemeData('defaultDark')),
+        ),
+      ],
       child: MaterialAppWithTheme(),
     );
   }
