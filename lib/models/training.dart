@@ -2,6 +2,8 @@ import 'package:hive/hive.dart';
 
 import 'block.dart';
 
+part 'training.g.dart';
+
 @HiveType(typeId: 2)
 class Training {
   @HiveField(0)
