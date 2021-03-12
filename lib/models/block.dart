@@ -1,23 +1,15 @@
+import 'package:hive/hive.dart';
+
 import 'exercise.dart';
 
+@HiveType(typeId: 1)
 class Block {
-  final String id;
-  final String title;
-  final String desc;
-  final List<Exercise> exercises;
-
-  Block(this.id, this.title, this.desc, this.exercises);
-
-  Block.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = json['title'],
-        desc = json['desc'],
-        exercises = json['exercises'].map((i) => Exercise.fromJson(i)).toList();
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'desc': desc,
-        'exercises': exercises.map((exercise) => exercise.toJson()).toList(),
-      };
+  @HiveField(0)
+  String id;
+  @HiveField(1)
+  String title;
+  @HiveField(2)
+  String desc;
+  @HiveField(3)
+  List<Exercise> exercises;
 }
