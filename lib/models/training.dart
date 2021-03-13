@@ -11,7 +11,7 @@ class Training extends HiveObject {
   @HiveField(1)
   String desc;
   @HiveField(2)
-  List<Block> blocks;
+  HiveList blocks;
 
-  Training(this.title, this.desc, this.blocks);
+  Training(this.title, this.desc);
 }

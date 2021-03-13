@@ -11,7 +11,7 @@ class Block extends HiveObject {
   @HiveField(1)
   String desc;
   @HiveField(2)
-  List<Exercise> exercises;
+  HiveList exercises;
 
-  Block(this.title, this.desc, this.exercises);
+  Block(this.title, this.desc);
 }

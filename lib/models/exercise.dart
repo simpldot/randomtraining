@@ -5,9 +5,9 @@ part 'exercise.g.dart';
 @HiveType(typeId: 0)
 class Exercise extends HiveObject {
   @HiveField(0)
-  String id;
-  @HiveField(1)
   String title;
-  @HiveField(2)
+  @HiveField(1)
   String desc;
+
+  Exercise(this.title, this.desc);
 }

@@ -16,21 +16,19 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Exercise()
-      ..id = fields[0] as String
-      ..title = fields[1] as String
-      ..desc = fields[2] as String;
+    return Exercise(
+      fields[0] as String,
+      fields[1] as String,
+    );
   }
 
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(3)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.title)
       ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.title)
+      ..writeByte(1)
       ..write(obj.desc);
   }
 

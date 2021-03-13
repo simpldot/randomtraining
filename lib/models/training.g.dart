@@ -19,8 +19,7 @@ class TrainingAdapter extends TypeAdapter<Training> {
     return Training(
       fields[0] as String,
       fields[1] as String,
-      (fields[2] as List)?.cast<Block>(),
-    );
+    )..blocks = (fields[2] as HiveList)?.castHiveList();
   }
 
   @override
