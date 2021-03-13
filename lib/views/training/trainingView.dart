@@ -1,34 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
+import 'package:randomtraining/views/training/addBlockView.dart';
 import 'package:randomtraining/views/training/blockCard.dart';
 
 class TrainingView extends StatefulWidget {
+  final Training training;
   final String id;
-  TrainingView({Key key, @required this.id}) : super(key: key);
+  TrainingView({Key key, @required this.training, @required this.id})
+      : super(key: key);
 
   @override
   _TrainingViewState createState() => _TrainingViewState();
 }
 
 class _TrainingViewState extends State<TrainingView> {
-  var data = {
-    "tr-1": {"title": "training 1", "desc": "description 1"},
-    "tr-2": {"title": "training 2", "desc": "description 2"},
-    "tr-3": {"title": "training 3", "desc": "description 3"}
-  };
-  var training;
-  @override
-  void initState() {
-    super.initState();
-    training = data[widget.id];
-  }
-
-  var blocks = [
-    {"id": "bl-1", "title": "block 1", "desc": "description 1"},
-    {"id": "bl-2", "title": "block 2", "desc": "description 2"},
-    {"id": "bl-3", "title": "block 3", "desc": "description 3"}
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,14 +27,14 @@ class _TrainingViewState extends State<TrainingView> {
             Hero(
               tag: widget.id + "t",
               child: Material(
-                child: Text(training["title"], style: heading),
+                child: Text(widget.training.title, style: heading),
               ),
             ),
             Hero(
               tag: widget.id + "d",
               child: Material(
                 child: Text(
-                  training["desc"],
+                  widget.training.desc,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                 ),
               ),
@@ -62,11 +48,15 @@ class _TrainingViewState extends State<TrainingView> {
       body: ReorderableListView.builder(
         padding: EdgeInsets.only(top: 8),
         onReorder: _onReorder,
-        itemCount: blocks.length,
-        itemBuilder: (context, i) => blockCard(context, blocks[i]),
+        itemCount: widget.training.blocks.length,
+        itemBuilder: (context, i) =>
+            blockCard(context, widget.training.blocks[i], i),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => AddBlockView()));
+        },
         label: Text('new Block'),
         icon: Icon(Icons.add),
       ),
@@ -79,8 +69,8 @@ class _TrainingViewState extends State<TrainingView> {
       if (newIndex > oldIndex) {
         newIndex -= 1;
       }
-      var item = blocks.removeAt(oldIndex);
-      blocks.insert(newIndex, item);
+      var item = widget.training.blocks.removeAt(oldIndex);
+      widget.training.blocks.insert(newIndex, item);
     });
   }
 }
