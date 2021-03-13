@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/hiveController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
+import 'package:randomtraining/views/home/addTrainingView.dart';
 import 'package:randomtraining/views/home/trainingCard.dart';
 
 class HomeView extends StatefulWidget {
@@ -10,14 +14,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  var trainings = [
-    {"id": "tr-1", "title": "training 1", "desc": "description 1"},
-    {"id": "tr-2", "title": "training 2", "desc": "description 2"},
-    {"id": "tr-3", "title": "training 3", "desc": "description 3"}
-  ];
+  List<Training> trainings;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    trainings = Provider.of<HiveController>(context).trainings;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -34,10 +40,13 @@ class _HomeViewState extends State<HomeView> {
       body: ReorderableListView.builder(
         onReorder: _onReorder,
         itemCount: trainings.length,
-        itemBuilder: (context, i) => trainingCard(context, trainings[i]),
+        itemBuilder: (context, i) => trainingCard(context, trainings[i], i),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => AddTrainingView()));
+        },
         label: Text('new Training'),
         icon: Icon(Icons.add),
       ),
