@@ -7,11 +7,11 @@ part 'block.g.dart';
 @HiveType(typeId: 1)
 class Block extends HiveObject {
   @HiveField(0)
-  String id;
-  @HiveField(1)
   String title;
-  @HiveField(2)
+  @HiveField(1)
   String desc;
-  @HiveField(3)
+  @HiveField(2)
   List<Exercise> exercises;
+
+  Block(this.title, this.desc, this.exercises);
 }
