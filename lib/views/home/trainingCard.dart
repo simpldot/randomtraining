@@ -1,23 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/hiveController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/training/trainingView.dart';
 
-Widget trainingCard(BuildContext context, Map<String, String> data) {
+Widget trainingCard(BuildContext context, Training training, int id) {
+  String idString = "tr-" + id.toString();
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-    key: Key(data["id"]),
+    key: Key(idString),
     child: Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: () {
+          Provider.of<HiveController>(context, listen: false).currentTraining =
+              training;
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => TrainingView(id: data["id"])));
+              builder: (BuildContext context) =>
+                  TrainingView(training: training, id: idString)));
         },
         title: Hero(
-            tag: data["id"] + "t",
-            child: Material(child: Text(data["title"], style: smallHeading))),
+            tag: idString + "t",
+            child: Material(child: Text(training.title, style: smallHeading))),
         subtitle: Hero(
-            tag: data["id"] + "d", child: Material(child: Text(data["desc"]))),
+            tag: idString + "d", child: Material(child: Text(training.desc))),
         trailing: Icon(Icons.drag_handle_rounded),
       ),
     ),
