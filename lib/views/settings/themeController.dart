@@ -5,15 +5,15 @@ import 'themes.dart';
 class ThemeController extends ChangeNotifier {
   ThemeData _themeData;
   final _theme = 'theme';
-  Box database;
+  Box theme;
 
-  ThemeController(database) {
-    this.database = database;
+  ThemeController() {
     _loadTheme();
   }
 
-  void _loadTheme() {
-    String selectedTheme = database.get(_theme) ?? 'defaultDark';
+  void _loadTheme() async {
+    theme = await Hive.openBox('settings');
+    String selectedTheme = theme.get(_theme) ?? 'defaultDark';
     _themeData = getThemeData(selectedTheme);
     notifyListeners();
   }
@@ -22,7 +22,7 @@ class ThemeController extends ChangeNotifier {
 
   setTheme(String themeName) async {
     _themeData = getThemeData(themeName);
-    database.put(_theme, themeName);
+    theme.put(_theme, themeName);
     notifyListeners();
   }
 }
