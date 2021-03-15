@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:randomtraining/hiveController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class AddTrainingView extends StatefulWidget {
@@ -26,7 +26,8 @@ class _AddTrainingViewState extends State<AddTrainingView> {
 
   @override
   Widget build(BuildContext context) {
-    HiveController _hiveController = Provider.of<HiveController>(context);
+    TrainingController _hiveController =
+        Provider.of<TrainingController>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
