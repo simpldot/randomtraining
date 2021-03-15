@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:randomtraining/hiveController.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/training/trainingView.dart';
@@ -14,8 +14,8 @@ Widget trainingCard(BuildContext context, Training training, int id) {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: () {
-          Provider.of<HiveController>(context, listen: false).currentTraining =
-              training;
+          Provider.of<BlockController>(context, listen: false).currentTraining =
+              id;
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) =>
                   TrainingView(training: training, id: idString)));

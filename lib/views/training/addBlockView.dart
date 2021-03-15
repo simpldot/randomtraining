@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
-
-import '../../hiveController.dart';
 
 class AddBlockView extends StatefulWidget {
   const AddBlockView({Key key}) : super(key: key);
@@ -27,7 +26,7 @@ class _AddBlockViewState extends State<AddBlockView> {
 
   @override
   Widget build(BuildContext context) {
-    HiveController _hiveController = Provider.of<HiveController>(context);
+    BlockController _blockController = Provider.of<BlockController>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -69,8 +68,8 @@ class _AddBlockViewState extends State<AddBlockView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _hiveController.addBlock(
-                  titleController.text, descController.text);
+              _blockController.addBlock(
+                  context, titleController.text, descController.text);
               Navigator.pop(context);
             }
           },

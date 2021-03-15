@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/block/blockView.dart';
 
-Widget blockCard(BuildContext context, Block block, int id) {
+Widget blockCard(BuildContext context, int id) {
   String idString = "bl-" + id.toString();
+  Block block = Provider.of<BlockController>(context).getBlock(id);
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
     key: Key(idString),
