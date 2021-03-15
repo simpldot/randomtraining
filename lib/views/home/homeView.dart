@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:randomtraining/hiveController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/home/addTrainingView.dart';
@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    trainings = Provider.of<HiveController>(context).trainings;
+    trainings = Provider.of<TrainingController>(context).trainings;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
