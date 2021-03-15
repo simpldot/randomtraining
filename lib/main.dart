@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
+import 'package:randomtraining/controllers/exerciseController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/models/exercise.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeController()),
         ChangeNotifierProvider(create: (_) => TrainingController()),
         ChangeNotifierProvider(create: (_) => BlockController()),
+        ChangeNotifierProvider(create: (_) => ExerciseController()),
       ],
       child: MaterialAppWithTheme(),
     );
