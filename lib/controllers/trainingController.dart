@@ -16,16 +16,13 @@ class TrainingController extends ChangeNotifier {
   }
 
   addTraining(String title, String desc) {
-    Training newTraining = Training(title, desc);
+    Training newTraining = Training(title, desc, []);
     trainingsBox.add(newTraining);
     notifyListeners();
   }
 
   removeTraining(int key) {
     trainingsBox.delete(key);
-    print(key);
-    print(trainingsBox.values.toList());
-    print(trainingsBox.keys.toList());
     notifyListeners();
   }
 
@@ -35,7 +32,12 @@ class TrainingController extends ChangeNotifier {
 
   updateTraining(int blockKey, int trainingKey) {
     Training training = trainingsBox.get(trainingKey);
-    training.blocks.toList().add(blockKey);
+    training.blocks.add(blockKey);
+    trainingsBox.put(trainingKey, training);
+    notifyListeners();
+  }
+
+  void saveBlockOrder(int trainingKey, Training training) {
     trainingsBox.put(trainingKey, training);
     notifyListeners();
   }

@@ -8,9 +8,9 @@ import 'package:randomtraining/views/training/addBlockView.dart';
 import 'package:randomtraining/views/training/blockCard.dart';
 
 class TrainingView extends StatefulWidget {
-  final Training training;
+  final int trainingKey;
   final String id;
-  TrainingView({Key key, @required this.training, @required this.id})
+  TrainingView({Key key, @required this.trainingKey, @required this.id})
       : super(key: key);
 
   @override
@@ -18,8 +18,14 @@ class TrainingView extends StatefulWidget {
 }
 
 class _TrainingViewState extends State<TrainingView> {
+  Training training;
+  List<int> blocks;
   @override
   Widget build(BuildContext context) {
+    training = Provider.of<TrainingController>(context)
+        .trainingsBox
+        .get(widget.trainingKey);
+    blocks = training.blocks.toList();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -30,14 +36,14 @@ class _TrainingViewState extends State<TrainingView> {
             Hero(
               tag: widget.id + "t",
               child: Material(
-                child: Text(widget.training.title, style: heading),
+                child: Text(training.title, style: heading),
               ),
             ),
             Hero(
               tag: widget.id + "d",
               child: Material(
                 child: Text(
-                  widget.training.desc,
+                  training.desc,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                 ),
               ),
@@ -59,9 +65,8 @@ class _TrainingViewState extends State<TrainingView> {
       body: ReorderableListView.builder(
         padding: EdgeInsets.only(top: 8),
         onReorder: _onReorder,
-        itemCount: widget.training.blocks.length,
-        itemBuilder: (context, i) =>
-            blockCard(context, widget.training.blocks[i]),
+        itemCount: training.blocks.length,
+        itemBuilder: (context, i) => blockCard(context, training.blocks[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -80,8 +85,11 @@ class _TrainingViewState extends State<TrainingView> {
       if (newIndex > oldIndex) {
         newIndex -= 1;
       }
-      var item = widget.training.blocks.removeAt(oldIndex);
-      widget.training.blocks.insert(newIndex, item);
+      var item = blocks.removeAt(oldIndex);
+      blocks.insert(newIndex, item);
+      training.blocks = blocks;
+      Provider.of<TrainingController>(context, listen: false)
+          .saveBlockOrder(widget.trainingKey, training);
     });
   }
 }

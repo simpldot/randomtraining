@@ -18,7 +18,7 @@ Widget trainingCard(BuildContext context, Training training, int id) {
               id;
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) =>
-                  TrainingView(training: training, id: idString)));
+                  TrainingView(trainingKey: id, id: idString)));
         },
         title: Hero(
             tag: idString + "t",

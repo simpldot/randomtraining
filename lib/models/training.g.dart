@@ -19,7 +19,8 @@ class TrainingAdapter extends TypeAdapter<Training> {
     return Training(
       fields[0] as String,
       fields[1] as String,
-    )..blocks = (fields[2] as List)?.cast<int>();
+      (fields[2] as List)?.cast<int>(),
+    );
   }
 
   @override
