@@ -8,7 +8,6 @@ import '../models/block.dart';
 class BlockController extends ChangeNotifier {
   Box blocksBox;
   final String _blocksKey = 'blocks';
-  List<Block> _blocks;
   int currentTraining;
 
   BlockController() {
@@ -17,11 +16,7 @@ class BlockController extends ChangeNotifier {
 
   _loadBlocks() async {
     blocksBox = await Hive.openBox<Block>(_blocksKey);
-    _blocks = blocksBox.values.toList();
-    print(_blocks);
   }
-
-  List<Block> get blocks => _blocks;
 
   List<Block> getBlocks(List<int> keys) {
     return keys.map((key) => blocksBox.get(key)).toList();
@@ -32,11 +27,17 @@ class BlockController extends ChangeNotifier {
   }
 
   addBlock(BuildContext context, String title, String desc) async {
-    Block newBlock = Block(title, desc);
-    _blocks.add(newBlock);
+    Block newBlock = Block(title, desc, []);
     int key = await blocksBox.add(newBlock);
     Provider.of<TrainingController>(context, listen: false)
         .updateTraining(key, currentTraining);
+    notifyListeners();
+  }
+
+  updateBlock(int exerciseKey, int blockKey) {
+    Block block = blocksBox.get(blockKey);
+    block.exercises.add(exerciseKey);
+    blocksBox.put(blockKey, block);
     notifyListeners();
   }
 }
