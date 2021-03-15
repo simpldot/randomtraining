@@ -65,8 +65,8 @@ class _TrainingViewState extends State<TrainingView> {
       body: ReorderableListView.builder(
         padding: EdgeInsets.only(top: 8),
         onReorder: _onReorder,
-        itemCount: training.blocks.length,
-        itemBuilder: (context, i) => blockCard(context, training.blocks[i]),
+        itemCount: blocks.length,
+        itemBuilder: (context, i) => blockCard(context, blocks[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
