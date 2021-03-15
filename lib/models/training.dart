@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
 
-import 'block.dart';
-
 part 'training.g.dart';
 
 @HiveType(typeId: 2)
@@ -11,7 +9,7 @@ class Training extends HiveObject {
   @HiveField(1)
   String desc;
   @HiveField(2)
-  HiveList blocks;
+  List<int> blocks;
 
   Training(this.title, this.desc);
 }
