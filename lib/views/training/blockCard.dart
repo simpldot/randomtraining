@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
+import 'package:randomtraining/controllers/exerciseController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/block/blockView.dart';
@@ -15,8 +16,11 @@ Widget blockCard(BuildContext context, int id) {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: () {
+          Provider.of<ExerciseController>(context, listen: false).currentBlock =
+              id;
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => BlockView(id: idString)));
+              builder: (BuildContext context) =>
+                  BlockView(blockKey: id, id: idString)));
         },
         title: Hero(
             tag: idString + "t",
