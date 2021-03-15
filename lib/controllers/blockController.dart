@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 
 import '../models/block.dart';
-import 'package:randomtraining/models/training.dart';
 
 class BlockController extends ChangeNotifier {
   Box blocksBox;
   final String _blocksKey = 'blocks';
   List<Block> _blocks;
-  Training currentTraining;
+  int currentTraining;
 
   BlockController() {
     _loadBlocks();
@@ -30,10 +31,12 @@ class BlockController extends ChangeNotifier {
     return blocksBox.get(key);
   }
 
-  addBlock(String title, String desc) {
+  addBlock(BuildContext context, String title, String desc) async {
     Block newBlock = Block(title, desc);
     _blocks.add(newBlock);
-    blocksBox.add(newBlock);
+    int key = await blocksBox.add(newBlock);
+    Provider.of<TrainingController>(context, listen: false)
+        .updateTraining(key, currentTraining);
     notifyListeners();
   }
 }

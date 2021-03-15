@@ -6,7 +6,6 @@ import '../models/training.dart';
 class TrainingController extends ChangeNotifier {
   Box trainingsBox;
   final String _trainingsKey = 'trainings';
-  List<Training> _trainings;
 
   TrainingController() {
     _loadTrainings();
@@ -14,16 +13,30 @@ class TrainingController extends ChangeNotifier {
 
   _loadTrainings() async {
     trainingsBox = await Hive.openBox<Training>(_trainingsKey);
-    _trainings = trainingsBox.values.toList();
-    print(_trainings);
   }
-
-  List<Training> get trainings => _trainings;
 
   addTraining(String title, String desc) {
     Training newTraining = Training(title, desc);
-    _trainings.add(newTraining);
     trainingsBox.add(newTraining);
+    notifyListeners();
+  }
+
+  removeTraining(int key) {
+    trainingsBox.delete(key);
+    print(key);
+    print(trainingsBox.values.toList());
+    print(trainingsBox.keys.toList());
+    notifyListeners();
+  }
+
+  deleteAll() {
+    trainingsBox.deleteAll(trainingsBox.keys);
+  }
+
+  updateTraining(int blockKey, int trainingKey) {
+    Training training = trainingsBox.get(trainingKey);
+    training.blocks.toList().add(blockKey);
+    trainingsBox.put(trainingKey, training);
     notifyListeners();
   }
 }

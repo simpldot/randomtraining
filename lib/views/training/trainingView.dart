@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/training/addBlockView.dart';
@@ -42,7 +45,15 @@ class _TrainingViewState extends State<TrainingView> {
           ],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<TrainingController>(context, listen: false)
+                    .removeTraining(
+                        Provider.of<BlockController>(context, listen: false)
+                            .currentTraining);
+                Navigator.of(context).pop();
+              }),
         ],
       ),
       body: ReorderableListView.builder(
@@ -50,7 +61,7 @@ class _TrainingViewState extends State<TrainingView> {
         onReorder: _onReorder,
         itemCount: widget.training.blocks.length,
         itemBuilder: (context, i) =>
-            blockCard(context, widget.training.blocks[i], i),
+            blockCard(context, widget.training.blocks[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
