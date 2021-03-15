@@ -80,10 +80,4 @@ class _AddBlockViewState extends State<AddBlockView> {
       ),
     );
   }
-
-  void addExercise() {
-    if (_formKey.currentState.validate()) {
-      Navigator.pop(context);
-    }
-  }
 }
