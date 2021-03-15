@@ -19,7 +19,7 @@ class BlockAdapter extends TypeAdapter<Block> {
     return Block(
       fields[0] as String,
       fields[1] as String,
-    )..exercises = (fields[2] as HiveList)?.castHiveList();
+    )..exercises = (fields[2] as List)?.cast<int>();
   }
 
   @override
