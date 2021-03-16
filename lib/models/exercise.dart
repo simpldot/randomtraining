@@ -1,18 +1,13 @@
-class Exercise {
-  final String id;
-  final String title;
-  final String desc;
+import 'package:hive/hive.dart';
 
-  Exercise(this.id, this.title, this.desc);
+part 'exercise.g.dart';
 
-  Exercise.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = json['title'],
-        desc = json['desc'];
+@HiveType(typeId: 0)
+class Exercise extends HiveObject {
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String desc;
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'desc': desc,
-      };
+  Exercise(this.title, this.desc);
 }

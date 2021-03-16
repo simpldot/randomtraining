@@ -1,36 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
+import 'package:randomtraining/views/training/addBlockView.dart';
 import 'package:randomtraining/views/training/blockCard.dart';
 
 class TrainingView extends StatefulWidget {
+  final int trainingKey;
   final String id;
-  TrainingView({Key key, @required this.id}) : super(key: key);
+  TrainingView({Key key, @required this.trainingKey, @required this.id})
+      : super(key: key);
 
   @override
   _TrainingViewState createState() => _TrainingViewState();
 }
 
 class _TrainingViewState extends State<TrainingView> {
-  var data = {
-    "tr-1": {"title": "training 1", "desc": "description 1"},
-    "tr-2": {"title": "training 2", "desc": "description 2"},
-    "tr-3": {"title": "training 3", "desc": "description 3"}
-  };
-  var training;
-  @override
-  void initState() {
-    super.initState();
-    training = data[widget.id];
-  }
-
-  var blocks = [
-    {"id": "bl-1", "title": "block 1", "desc": "description 1"},
-    {"id": "bl-2", "title": "block 2", "desc": "description 2"},
-    {"id": "bl-3", "title": "block 3", "desc": "description 3"}
-  ];
-
+  Training training;
+  List<int> blocks;
   @override
   Widget build(BuildContext context) {
+    training = Provider.of<TrainingController>(context)
+        .trainingsBox
+        .get(widget.trainingKey);
+    blocks = training.blocks.toList();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -41,14 +36,14 @@ class _TrainingViewState extends State<TrainingView> {
             Hero(
               tag: widget.id + "t",
               child: Material(
-                child: Text(training["title"], style: heading),
+                child: Text(training.title, style: heading),
               ),
             ),
             Hero(
               tag: widget.id + "d",
               child: Material(
                 child: Text(
-                  training["desc"],
+                  training.desc,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                 ),
               ),
@@ -56,7 +51,15 @@ class _TrainingViewState extends State<TrainingView> {
           ],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<TrainingController>(context, listen: false)
+                    .removeTraining(
+                        Provider.of<BlockController>(context, listen: false)
+                            .currentTraining);
+                Navigator.of(context).pop();
+              }),
         ],
       ),
       body: ReorderableListView.builder(
@@ -66,7 +69,10 @@ class _TrainingViewState extends State<TrainingView> {
         itemBuilder: (context, i) => blockCard(context, blocks[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => AddBlockView()));
+        },
         label: Text('new Block'),
         icon: Icon(Icons.add),
       ),
@@ -81,6 +87,9 @@ class _TrainingViewState extends State<TrainingView> {
       }
       var item = blocks.removeAt(oldIndex);
       blocks.insert(newIndex, item);
+      training.blocks = blocks;
+      Provider.of<TrainingController>(context, listen: false)
+          .saveBlockOrder(widget.trainingKey, training);
     });
   }
 }

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
+import 'package:randomtraining/views/home/addTrainingView.dart';
 import 'package:randomtraining/views/home/trainingCard.dart';
+import 'package:randomtraining/views/settings/settingsView.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -10,14 +16,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  var trainings = [
-    {"id": "tr-1", "title": "training 1", "desc": "description 1"},
-    {"id": "tr-2", "title": "training 2", "desc": "description 2"},
-    {"id": "tr-3", "title": "training 3", "desc": "description 3"}
-  ];
-
+  List<Training> trainings;
   @override
   Widget build(BuildContext context) {
+    Box trainingsBox = Provider.of<TrainingController>(context).trainingsBox;
+    trainings = trainingsBox.values.toList();
+    List<int> trainingsKeys = trainingsBox.keys.toList().cast<int>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -27,17 +31,24 @@ class _HomeViewState extends State<HomeView> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => SettingsView()));
+            },
           ),
         ],
       ),
       body: ReorderableListView.builder(
         onReorder: _onReorder,
         itemCount: trainings.length,
-        itemBuilder: (context, i) => trainingCard(context, trainings[i]),
+        itemBuilder: (context, i) =>
+            trainingCard(context, trainings[i], trainingsKeys[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => AddTrainingView()));
+        },
         label: Text('new Training'),
         icon: Icon(Icons.add),
       ),
