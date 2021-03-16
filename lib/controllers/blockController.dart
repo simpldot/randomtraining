@@ -40,4 +40,9 @@ class BlockController extends ChangeNotifier {
     blocksBox.put(blockKey, block);
     notifyListeners();
   }
+
+  removeBlock(int key) {
+    blocksBox.delete(key);
+    notifyListeners();
+  }
 }

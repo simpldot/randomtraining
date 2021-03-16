@@ -37,7 +37,7 @@ class TrainingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveBlockOrder(int trainingKey, Training training) {
+  saveBlockOrder(int trainingKey, Training training) {
     trainingsBox.put(trainingKey, training);
     notifyListeners();
   }

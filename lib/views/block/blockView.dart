@@ -55,7 +55,15 @@ class _BlockViewState extends State<BlockView> {
           ],
         ),
         actions: [
-          IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<BlockController>(context, listen: false)
+                    .removeBlock(
+                        Provider.of<ExerciseController>(context, listen: false)
+                            .currentBlock);
+                Navigator.of(context).pop();
+              }),
         ],
       ),
       body: ListView.builder(
