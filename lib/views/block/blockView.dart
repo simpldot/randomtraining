@@ -18,18 +18,18 @@ class BlockView extends StatefulWidget {
 }
 
 class _BlockViewState extends State<BlockView> {
-  int focusItem = 0;
+  int focusItem;
 
   Block block;
   List<int> exercises;
-  List<bool> checkedList;
+  List<int> checkedList = [];
 
   @override
   Widget build(BuildContext context) {
     block =
         Provider.of<BlockController>(context).blocksBox.get(widget.blockKey);
     exercises = block.exercises.toList();
-    checkedList = exercises.map((e) => false).toList();
+    _setFocusItem();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -65,7 +65,7 @@ class _BlockViewState extends State<BlockView> {
             Exercise exercise = Provider.of<ExerciseController>(context)
                 .getExercise(exercises[i]);
             return Padding(
-              padding: i == focusItem
+              padding: exercises[i] == focusItem
                   ? EdgeInsets.fromLTRB(8, 0, 8, 0)
                   : EdgeInsets.fromLTRB(28, 0, 28, 0),
               key: Key(i.toString()),
@@ -74,10 +74,14 @@ class _BlockViewState extends State<BlockView> {
                 child: CheckboxListTile(
                     title: Text(exercise.title, style: smallHeading),
                     subtitle: Text(exercise.desc),
-                    value: checkedList[i],
+                    value: checkedList.contains(exercises[i]),
                     onChanged: (newValue) {
                       setState(() {
-                        checkedList[i] = !checkedList[i];
+                        if (newValue) {
+                          checkedList.add(exercises[i]);
+                        } else {
+                          checkedList.remove(exercises[i]);
+                        }
                       });
                       _setFocusItem();
                       print(checkedList);
@@ -99,7 +103,9 @@ class _BlockViewState extends State<BlockView> {
 
   void _setFocusItem() {
     setState(() {
-      this.focusItem = checkedList.indexOf(false);
+      this.focusItem = exercises.firstWhere(
+          (element) => !checkedList.contains(element),
+          orElse: () => -1);
     });
   }
 }
