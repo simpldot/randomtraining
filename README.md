@@ -1,4 +1,5 @@
-![titleimage](assets/icon/title.png)
+<img src="assets/icon/title.png" width=400>
+
 # Random Training
 
 > Create a simple Workout and the exercises will be shuffled
