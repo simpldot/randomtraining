@@ -37,6 +37,13 @@ class TrainingController extends ChangeNotifier {
     notifyListeners();
   }
 
+  removeBlock(int blockKey, int trainingKey) {
+    Training training = trainingsBox.get(trainingKey);
+    training.blocks.remove(blockKey);
+    trainingsBox.put(trainingKey, training);
+    notifyListeners();
+  }
+
   saveBlockOrder(int trainingKey, Training training) {
     trainingsBox.put(trainingKey, training);
     notifyListeners();

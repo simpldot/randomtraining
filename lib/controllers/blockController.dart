@@ -41,8 +41,10 @@ class BlockController extends ChangeNotifier {
     notifyListeners();
   }
 
-  removeBlock(int key) {
+  removeBlock(BuildContext context, int key) {
     blocksBox.delete(key);
+    Provider.of<TrainingController>(context, listen: false)
+        .removeBlock(key, currentTraining);
     notifyListeners();
   }
 }

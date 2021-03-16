@@ -60,6 +60,7 @@ class _BlockViewState extends State<BlockView> {
               onPressed: () {
                 Provider.of<BlockController>(context, listen: false)
                     .removeBlock(
+                        context,
                         Provider.of<ExerciseController>(context, listen: false)
                             .currentBlock);
                 Navigator.of(context).pop();
