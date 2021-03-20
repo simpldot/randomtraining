@@ -50,6 +50,21 @@ ThemeData getThemeData(String themeName) {
       Brightness brightness = Brightness.light;
       return _getThemeData(
           brightness, primaryColor, backgroundColor, textColor);
+    case 'pinkDark':
+      Color primaryColor = Color.fromRGBO(255, 93, 239, 1); //#ff5def
+      Color backgroundColor = Colors.black;
+      Color textColor = Colors.white;
+      Brightness brightness = Brightness.dark;
+      return _getThemeData(
+          brightness, primaryColor, backgroundColor, textColor);
+      break;
+    case 'pinkLight':
+      Color primaryColor = Color.fromRGBO(255, 93, 239, 1); //#ff5def
+      Color backgroundColor = Colors.white;
+      Color textColor = Colors.black;
+      Brightness brightness = Brightness.light;
+      return _getThemeData(
+          brightness, primaryColor, backgroundColor, textColor);
     default:
       return ThemeData();
   }
