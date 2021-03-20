@@ -8,7 +8,8 @@ import 'package:randomtraining/views/block/blockView.dart';
 
 Widget blockCard(BuildContext context, int id) {
   String idString = "bl-" + id.toString();
-  Block block = Provider.of<BlockController>(context).getBlock(id);
+  BlockController blockController = Provider.of<BlockController>(context);
+  Block block = blockController.getBlock(id);
   return Padding(
     padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
     key: Key(idString),
@@ -18,6 +19,7 @@ Widget blockCard(BuildContext context, int id) {
         onTap: () {
           Provider.of<ExerciseController>(context, listen: false).currentBlock =
               id;
+          blockController.shuffleExercises(id);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) =>
                   BlockView(blockKey: id, id: idString)));

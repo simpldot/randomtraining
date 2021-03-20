@@ -47,4 +47,11 @@ class BlockController extends ChangeNotifier {
         .removeBlock(key, currentTraining);
     notifyListeners();
   }
+
+  shuffleExercises(int blockKey) {
+    Block block = blocksBox.get(blockKey);
+    block.exercises.shuffle();
+    blocksBox.put(blockKey, block);
+    notifyListeners();
+  }
 }
