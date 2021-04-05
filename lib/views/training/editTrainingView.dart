@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class EditTrainingView extends StatefulWidget {
-  final String id;
-  const EditTrainingView({Key key, this.id}) : super(key: key);
+  final int id;
+  const EditTrainingView({Key key, @required this.id}) : super(key: key);
 
   @override
   _EditTrainingViewState createState() => _EditTrainingViewState();
@@ -40,6 +41,18 @@ class _EditTrainingViewState extends State<EditTrainingView> {
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text('edit raining', style: heading),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  Provider.of<TrainingController>(context, listen: false)
+                      .removeTraining(
+                          Provider.of<BlockController>(context, listen: false)
+                              .currentTraining);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }),
+          ],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -81,7 +94,7 @@ class _EditTrainingViewState extends State<EditTrainingView> {
             }
           },
           label: Text('Save'),
-          icon: Icon(Icons.add),
+          icon: Icon(Icons.save),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
