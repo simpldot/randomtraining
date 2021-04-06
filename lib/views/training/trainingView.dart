@@ -59,10 +59,7 @@ class _TrainingViewState extends State<TrainingView> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => EditTrainingView(
-                              id: Provider.of<BlockController>(context,
-                                      listen: false)
-                                  .currentTraining,
-                            )));
+                            id: widget.trainingKey, training: training)));
               }),
         ],
       ),
@@ -93,7 +90,7 @@ class _TrainingViewState extends State<TrainingView> {
       blocks.insert(newIndex, item);
       training.blocks = blocks;
       Provider.of<TrainingController>(context, listen: false)
-          .saveBlockOrder(widget.trainingKey, training);
+          .updateTraining(widget.trainingKey, training);
     });
   }
 }
