@@ -34,9 +34,14 @@ class BlockController extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateBlock(int exerciseKey, int blockKey) {
+  addExerciseToBlock(int exerciseKey, int blockKey) {
     Block block = blocksBox.get(blockKey);
     block.exercises.add(exerciseKey);
+    blocksBox.put(blockKey, block);
+    notifyListeners();
+  }
+
+  updateBlock(int blockKey, Block block) {
     blocksBox.put(blockKey, block);
     notifyListeners();
   }

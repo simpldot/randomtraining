@@ -6,6 +6,7 @@ import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/block/addExerciseView.dart';
+import 'package:randomtraining/views/block/editBlockView.dart';
 
 class BlockView extends StatefulWidget {
   final int blockKey;
@@ -56,14 +57,13 @@ class _BlockViewState extends State<BlockView> {
         ),
         actions: [
           IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.edit),
               onPressed: () {
-                Provider.of<BlockController>(context, listen: false)
-                    .removeBlock(
-                        context,
-                        Provider.of<ExerciseController>(context, listen: false)
-                            .currentBlock);
-                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditBlockView(id: widget.blockKey, block: block)));
               }),
         ],
       ),

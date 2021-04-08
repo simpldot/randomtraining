@@ -26,6 +26,6 @@ class ExerciseController extends ChangeNotifier {
     Exercise newExercise = Exercise(title, desc);
     int key = await exerciseBox.add(newExercise);
     Provider.of<BlockController>(context, listen: false)
-        .updateBlock(key, currentBlock);
+        .addExerciseToBlock(key, currentBlock);
   }
 }
