@@ -30,7 +30,7 @@ class BlockController extends ChangeNotifier {
     Block newBlock = Block(title, desc, []);
     int key = await blocksBox.add(newBlock);
     Provider.of<TrainingController>(context, listen: false)
-        .updateTraining(key, currentTraining);
+        .addBlockToTraining(key, currentTraining);
     notifyListeners();
   }
 
