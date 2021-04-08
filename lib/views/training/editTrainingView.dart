@@ -2,26 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class EditTrainingView extends StatefulWidget {
   final int id;
-  const EditTrainingView({Key key, @required this.id}) : super(key: key);
+  final Training training;
+  const EditTrainingView({Key key, @required this.id, @required this.training})
+      : super(key: key);
 
   @override
-  _EditTrainingViewState createState() => _EditTrainingViewState();
+  _EditTrainingViewState createState() => _EditTrainingViewState(training);
 }
 
 class _EditTrainingViewState extends State<EditTrainingView> {
-  final titleController = TextEditingController();
+  TextEditingController titleController;
+  TextEditingController descController;
 
-  final descController = TextEditingController();
+  Training training;
 
   final _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    super.initState();
+  _EditTrainingViewState(Training training) {
+    this.training = training;
+    titleController = TextEditingController(text: training.title);
+    descController = TextEditingController(text: training.desc);
   }
 
   @override
@@ -40,7 +45,7 @@ class _EditTrainingViewState extends State<EditTrainingView> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text('edit raining', style: heading),
+          title: Text('edit Training', style: heading),
           actions: [
             IconButton(
                 icon: Icon(Icons.delete),
@@ -88,8 +93,9 @@ class _EditTrainingViewState extends State<EditTrainingView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _hiveController.addTraining(
-                  titleController.text, descController.text);
+              training.title = titleController.text;
+              training.desc = descController.text;
+              _hiveController.updateTraining(widget.id, training);
               Navigator.pop(context);
             }
           },
