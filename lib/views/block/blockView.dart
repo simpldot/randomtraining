@@ -73,29 +73,49 @@ class _BlockViewState extends State<BlockView> {
           itemBuilder: (context, i) {
             Exercise exercise = Provider.of<ExerciseController>(context)
                 .getExercise(exercises[i]);
-            return Padding(
-              padding: exercises[i] == focusItem
-                  ? EdgeInsets.fromLTRB(8, 0, 8, 0)
-                  : EdgeInsets.fromLTRB(28, 0, 28, 0),
+            return Dismissible(
               key: Key(i.toString()),
-              child: Card(
-                clipBehavior: Clip.antiAlias,
-                child: CheckboxListTile(
-                    title: Text(exercise.title, style: smallHeading),
-                    subtitle: Text(exercise.desc),
-                    value: checkedList.contains(exercises[i]),
-                    onChanged: (newValue) {
-                      setState(() {
-                        if (newValue) {
-                          checkedList.add(exercises[i]);
-                        } else {
-                          checkedList.remove(exercises[i]);
-                        }
-                      });
-                      _setFocusItem();
-                      print(checkedList);
-                    }),
+              child: Padding(
+                padding: exercises[i] == focusItem
+                    ? EdgeInsets.fromLTRB(8, 0, 8, 0)
+                    : EdgeInsets.fromLTRB(28, 0, 28, 0),
+                key: Key(i.toString()),
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  child: CheckboxListTile(
+                      title: Text(exercise.title, style: smallHeading),
+                      subtitle: Text(exercise.desc),
+                      value: checkedList.contains(exercises[i]),
+                      onChanged: (newValue) {
+                        setState(() {
+                          if (newValue) {
+                            checkedList.add(exercises[i]);
+                          } else {
+                            checkedList.remove(exercises[i]);
+                          }
+                        });
+                        _setFocusItem();
+                        print(checkedList);
+                      }),
+                ),
               ),
+              background: Container(
+                child: Icon(Icons.edit),
+              ),
+              onDismissed: (direction) {
+                var item = exercises.elementAt(i);
+                setState(() {
+                  exercises.removeAt(i);
+                });
+                //_deleteExercise(i);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Exercise deleted"),
+                    action: SnackBarAction(
+                        label: "UNDO",
+                        onPressed: () {
+                          _undoDeletion(i, item);
+                        })));
+              },
             );
           }),
       floatingActionButton: FloatingActionButton.extended(
@@ -115,6 +135,18 @@ class _BlockViewState extends State<BlockView> {
       this.focusItem = exercises.firstWhere(
           (element) => !checkedList.contains(element),
           orElse: () => -1);
+    });
+  }
+
+  void _deleteExercise(index) {
+    setState(() {
+      exercises.removeAt(index);
+    });
+  }
+
+  void _undoDeletion(index, exercise) {
+    setState(() {
+      exercises.insert(index, exercise);
     });
   }
 }
