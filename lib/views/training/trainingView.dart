@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
