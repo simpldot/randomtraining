@@ -30,9 +30,14 @@ class TrainingController extends ChangeNotifier {
     trainingsBox.deleteAll(trainingsBox.keys);
   }
 
-  updateTraining(int blockKey, int trainingKey) {
+  addBlockToTraining(int blockKey, int trainingKey) {
     Training training = trainingsBox.get(trainingKey);
     training.blocks.add(blockKey);
+    trainingsBox.put(trainingKey, training);
+    notifyListeners();
+  }
+
+  updateTraining(int trainingKey, Training training) {
     trainingsBox.put(trainingKey, training);
     notifyListeners();
   }
@@ -40,11 +45,6 @@ class TrainingController extends ChangeNotifier {
   removeBlock(int blockKey, int trainingKey) {
     Training training = trainingsBox.get(trainingKey);
     training.blocks.remove(blockKey);
-    trainingsBox.put(trainingKey, training);
-    notifyListeners();
-  }
-
-  saveBlockOrder(int trainingKey, Training training) {
     trainingsBox.put(trainingKey, training);
     notifyListeners();
   }
