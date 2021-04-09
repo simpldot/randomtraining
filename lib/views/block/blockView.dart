@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
@@ -29,6 +30,8 @@ class _BlockViewState extends State<BlockView> {
   Widget build(BuildContext context) {
     block =
         Provider.of<BlockController>(context).blocksBox.get(widget.blockKey);
+    ExerciseController _exerciseController =
+        Provider.of<ExerciseController>(context);
     exercises = block.exercises.toList();
     _setFocusItem();
     return Scaffold(
@@ -71,15 +74,15 @@ class _BlockViewState extends State<BlockView> {
           padding: EdgeInsets.only(top: 8),
           itemCount: exercises.length,
           itemBuilder: (context, i) {
-            Exercise exercise = Provider.of<ExerciseController>(context)
-                .getExercise(exercises[i]);
-            return Dismissible(
+            Exercise exercise = _exerciseController.getExercise(exercises[i]);
+            return Padding(
+              padding: exercises[i] == focusItem
+                  ? EdgeInsets.fromLTRB(8, 0, 8, 0)
+                  : EdgeInsets.fromLTRB(28, 0, 28, 0),
               key: Key(i.toString()),
-              child: Padding(
-                padding: exercises[i] == focusItem
-                    ? EdgeInsets.fromLTRB(8, 0, 8, 0)
-                    : EdgeInsets.fromLTRB(28, 0, 28, 0),
-                key: Key(i.toString()),
+              child: Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actionExtentRatio: 0.25,
                 child: Card(
                   clipBehavior: Clip.antiAlias,
                   child: CheckboxListTile(
@@ -98,24 +101,44 @@ class _BlockViewState extends State<BlockView> {
                         print(checkedList);
                       }),
                 ),
+                secondaryActions: [
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: IconSlideAction(
+                        caption: 'Edit',
+                        icon: Icons.edit,
+                        onTap: () => {},
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: IconSlideAction(
+                        caption: 'Delete',
+                        color: Colors.red,
+                        icon: Icons.delete,
+                        onTap: () {
+                          _exerciseController.removeExercise(
+                              context, exercises[i]);
+                          exercises.removeAt(i);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Exercise deleted"),
+                              action: SnackBarAction(
+                                  label: "UNDO",
+                                  onPressed: () {
+                                    _exerciseController.addExercise(
+                                        context, exercise.title, exercise.desc);
+                                  })));
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              background: Container(
-                child: Icon(Icons.edit),
-              ),
-              onDismissed: (direction) {
-                var item = exercises.elementAt(i);
-                setState(() {
-                  exercises.removeAt(i);
-                });
-                //_deleteExercise(i);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Exercise deleted"),
-                    action: SnackBarAction(
-                        label: "UNDO",
-                        onPressed: () {
-                          _undoDeletion(i, item);
-                        })));
-              },
             );
           }),
       floatingActionButton: FloatingActionButton.extended(
@@ -135,18 +158,6 @@ class _BlockViewState extends State<BlockView> {
       this.focusItem = exercises.firstWhere(
           (element) => !checkedList.contains(element),
           orElse: () => -1);
-    });
-  }
-
-  void _deleteExercise(index) {
-    setState(() {
-      exercises.removeAt(index);
-    });
-  }
-
-  void _undoDeletion(index, exercise) {
-    setState(() {
-      exercises.insert(index, exercise);
     });
   }
 }
