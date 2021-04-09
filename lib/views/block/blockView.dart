@@ -8,6 +8,7 @@ import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/block/addExerciseView.dart';
 import 'package:randomtraining/views/block/editBlockView.dart';
+import 'package:randomtraining/views/block/editExerciseView.dart';
 
 class BlockView extends StatefulWidget {
   final int blockKey;
@@ -109,7 +110,15 @@ class _BlockViewState extends State<BlockView> {
                       child: IconSlideAction(
                         caption: 'Edit',
                         icon: Icons.edit,
-                        onTap: () => {},
+                        onTap: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditExerciseView(
+                                        exercise: exercise,
+                                        exerciseId: exercises[i],
+                                      )))
+                        },
                       ),
                     ),
                   ),

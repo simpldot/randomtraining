@@ -34,4 +34,9 @@ class ExerciseController extends ChangeNotifier {
     Provider.of<BlockController>(context, listen: false)
         .removeExercise(key, currentBlock);
   }
+
+  void updateExercise(int exerciseId, Exercise exercise) {
+    exerciseBox.put(exerciseId, exercise);
+    notifyListeners();
+  }
 }
