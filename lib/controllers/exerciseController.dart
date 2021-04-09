@@ -28,4 +28,10 @@ class ExerciseController extends ChangeNotifier {
     Provider.of<BlockController>(context, listen: false)
         .addExerciseToBlock(key, currentBlock);
   }
+
+  removeExercise(BuildContext context, int key) {
+    exerciseBox.delete(key);
+    Provider.of<BlockController>(context, listen: false)
+        .removeExercise(key, currentBlock);
+  }
 }
