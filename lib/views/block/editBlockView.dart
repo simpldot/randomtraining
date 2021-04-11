@@ -64,7 +64,7 @@ class _EditBlockViewState extends State<EditBlockView> {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Exercise deleted"),
+                      content: Text("Block deleted"),
                       action: SnackBarAction(
                           label: "UNDO",
                           textColor: Theme.of(context).accentColor,
