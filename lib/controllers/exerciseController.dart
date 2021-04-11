@@ -26,6 +26,17 @@ class ExerciseController extends ChangeNotifier {
     Exercise newExercise = Exercise(title, desc);
     int key = await exerciseBox.add(newExercise);
     Provider.of<BlockController>(context, listen: false)
-        .updateBlock(key, currentBlock);
+        .addExerciseToBlock(key, currentBlock);
+  }
+
+  removeExercise(BuildContext context, int key) {
+    exerciseBox.delete(key);
+    Provider.of<BlockController>(context, listen: false)
+        .removeExercise(key, currentBlock);
+  }
+
+  void updateExercise(int exerciseId, Exercise exercise) {
+    exerciseBox.put(exerciseId, exercise);
+    notifyListeners();
   }
 }

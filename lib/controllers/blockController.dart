@@ -30,13 +30,19 @@ class BlockController extends ChangeNotifier {
     Block newBlock = Block(title, desc, []);
     int key = await blocksBox.add(newBlock);
     Provider.of<TrainingController>(context, listen: false)
-        .updateTraining(key, currentTraining);
+        .addBlockToTraining(key, currentTraining);
     notifyListeners();
   }
 
-  updateBlock(int exerciseKey, int blockKey) {
+  addExerciseToBlock(int exerciseKey, int blockKey) {
     Block block = blocksBox.get(blockKey);
+    block.exercises = block.exercises.toList();
     block.exercises.add(exerciseKey);
+    blocksBox.put(blockKey, block);
+    notifyListeners();
+  }
+
+  updateBlock(int blockKey, Block block) {
     blocksBox.put(blockKey, block);
     notifyListeners();
   }
@@ -45,6 +51,14 @@ class BlockController extends ChangeNotifier {
     blocksBox.delete(key);
     Provider.of<TrainingController>(context, listen: false)
         .removeBlock(key, currentTraining);
+    notifyListeners();
+  }
+
+  removeExercise(int exerciseKey, int blockKey) {
+    Block block = blocksBox.get(blockKey);
+    block.exercises.remove(exerciseKey);
+    blocksBox.put(blockKey, block);
+    print(blockKey);
     notifyListeners();
   }
 
