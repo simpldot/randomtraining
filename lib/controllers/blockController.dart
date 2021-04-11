@@ -28,7 +28,7 @@ class BlockController extends ChangeNotifier {
 
   addBlock(TrainingController trainingController, String title, String desc,
       List<int> exercises) async {
-    Block newBlock = Block(title, desc, []);
+    Block newBlock = Block(title, desc, exercises);
     int key = await blocksBox.add(newBlock);
     trainingController.addBlockToTraining(key, currentTraining);
     notifyListeners();
