@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
@@ -53,6 +54,17 @@ class _EditExerciseViewState extends State<EditExerciseView> {
                   Provider.of<ExerciseController>(context, listen: false)
                       .removeExercise(context, widget.exerciseId);
                   Navigator.of(context).pop();
+                  Flushbar(
+                      margin: EdgeInsets.all(8),
+                      borderRadius: 8,
+                      message: "Exercise deleted",
+                      mainButton: TextButton(
+                          child: Text("UNDO"),
+                          onPressed: () {
+                            _exerciseController.addExercise(
+                                context, exercise.title, exercise.desc);
+                          }))
+                    ..show(context);
                 }),
           ],
         ),
