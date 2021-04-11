@@ -29,6 +29,8 @@ class _BlockViewState extends State<BlockView> {
 
   @override
   Widget build(BuildContext context) {
+    BlockController blockController =
+        Provider.of<BlockController>(context, listen: false);
     block =
         Provider.of<BlockController>(context).blocksBox.get(widget.blockKey);
     ExerciseController _exerciseController =
@@ -36,6 +38,7 @@ class _BlockViewState extends State<BlockView> {
     exercises = block.exercises.toList();
     _setFocusItem();
     return Scaffold(
+      key: GlobalKey<ScaffoldState>(),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -117,6 +120,7 @@ class _BlockViewState extends State<BlockView> {
                                   builder: (context) => EditExerciseView(
                                         exercise: exercise,
                                         exerciseId: exercises[i],
+                                        blockController: blockController,
                                       )))
                         },
                       ),
@@ -140,7 +144,9 @@ class _BlockViewState extends State<BlockView> {
                                   label: "UNDO",
                                   onPressed: () {
                                     _exerciseController.addExercise(
-                                        context, exercise.title, exercise.desc);
+                                        blockController,
+                                        exercise.title,
+                                        exercise.desc);
                                   })));
                         },
                       ),
