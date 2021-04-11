@@ -61,6 +61,8 @@ class TrainingController extends ChangeNotifier {
 
   removeBlock(int blockKey, int trainingKey) {
     Training training = trainingsBox.get(trainingKey);
+    // convert to non fixed list
+    training.blocks = training.blocks.toList();
     training.blocks.remove(blockKey);
     trainingsBox.put(trainingKey, training);
     notifyListeners();
