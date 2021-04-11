@@ -23,8 +23,8 @@ class TrainingController extends ChangeNotifier {
     return trainingsOrder.toList();
   }
 
-  addTraining(String title, String desc) async {
-    Training newTraining = Training(title, desc, []);
+  addTraining(String title, String desc, List<int> blocks) async {
+    Training newTraining = Training(title, desc, blocks);
     int key = await trainingsBox.add(newTraining);
     List<int> trainingsOrder = getTrainingsOrder();
     trainingsOrder.add(key);
