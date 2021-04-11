@@ -32,7 +32,12 @@ class TrainingController extends ChangeNotifier {
 
   addBlockToTraining(int blockKey, int trainingKey) {
     Training training = trainingsBox.get(trainingKey);
-    training.blocks.add(blockKey);
+    // convert to non fixed list
+    List<int> blocks = [];
+    blocks.addAll(training.blocks);
+    blocks.add(blockKey);
+    // save block
+    training.blocks = blocks;
     trainingsBox.put(trainingKey, training);
     notifyListeners();
   }
