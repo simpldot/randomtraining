@@ -151,6 +151,7 @@ class _BlockViewState extends State<BlockView> {
                               content: Text("Exercise deleted"),
                               action: SnackBarAction(
                                   label: "UNDO",
+                                  textColor: Theme.of(context).accentColor,
                                   onPressed: () {
                                     _exerciseController.addExercise(
                                         blockController,
