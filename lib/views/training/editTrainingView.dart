@@ -38,7 +38,7 @@ class _EditTrainingViewState extends State<EditTrainingView> {
 
   @override
   Widget build(BuildContext context) {
-    TrainingController _hiveController =
+    TrainingController _trainingController =
         Provider.of<TrainingController>(context);
     return Container(
       child: Scaffold(
@@ -56,6 +56,15 @@ class _EditTrainingViewState extends State<EditTrainingView> {
                               .currentTraining);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Training deleted"),
+                      action: SnackBarAction(
+                          label: "UNDO",
+                          textColor: Theme.of(context).accentColor,
+                          onPressed: () {
+                            _trainingController.addTraining(
+                                training.title, training.desc, training.blocks);
+                          })));
                 }),
           ],
         ),
@@ -95,7 +104,7 @@ class _EditTrainingViewState extends State<EditTrainingView> {
             if (_formKey.currentState.validate()) {
               training.title = titleController.text;
               training.desc = descController.text;
-              _hiveController.updateTraining(widget.id, training);
+              _trainingController.updateTraining(widget.id, training);
               Navigator.pop(context);
             }
           },

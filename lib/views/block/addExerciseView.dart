@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
@@ -28,6 +29,8 @@ class _AddExerciseViewState extends State<AddExerciseView> {
   Widget build(BuildContext context) {
     ExerciseController _exerciseController =
         Provider.of<ExerciseController>(context);
+    BlockController blockController =
+        Provider.of<BlockController>(context, listen: false);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -70,7 +73,7 @@ class _AddExerciseViewState extends State<AddExerciseView> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               _exerciseController.addExercise(
-                  context, titleController.text, descController.text);
+                  blockController, titleController.text, descController.text);
               Navigator.pop(context);
             }
           },

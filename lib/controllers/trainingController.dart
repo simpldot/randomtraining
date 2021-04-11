@@ -9,8 +9,6 @@ class TrainingController extends ChangeNotifier {
   final String _trainingsKey = 'trainings';
   final String _trainingsOrderKey = 'trainings-order';
 
-  List<int> trainingsOrder;
-
   TrainingController() {
     _loadTrainings();
   }
@@ -18,17 +16,17 @@ class TrainingController extends ChangeNotifier {
   _loadTrainings() async {
     trainingsBox = await Hive.openBox<Training>(_trainingsKey);
     settingsBox = await Hive.openBox('settings');
-    trainingsOrder = settingsBox.get(_trainingsOrderKey) ?? [];
-    trainingsOrder.toList();
   }
 
   List<int> getTrainingsOrder() {
-    return trainingsOrder;
+    List<int> trainingsOrder = settingsBox.get(_trainingsOrderKey) ?? [];
+    return trainingsOrder.toList();
   }
 
-  addTraining(String title, String desc) async {
-    Training newTraining = Training(title, desc, []);
+  addTraining(String title, String desc, List<int> blocks) async {
+    Training newTraining = Training(title, desc, blocks);
     int key = await trainingsBox.add(newTraining);
+    List<int> trainingsOrder = getTrainingsOrder();
     trainingsOrder.add(key);
     settingsBox.put(_trainingsOrderKey, trainingsOrder);
     notifyListeners();
@@ -41,6 +39,7 @@ class TrainingController extends ChangeNotifier {
 
   removeTraining(int key) {
     trainingsBox.delete(key);
+    List<int> trainingsOrder = getTrainingsOrder();
     trainingsOrder.remove(key);
     settingsBox.put(_trainingsOrderKey, trainingsOrder);
     notifyListeners();

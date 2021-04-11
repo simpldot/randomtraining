@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
@@ -13,7 +14,12 @@ import 'package:randomtraining/views/block/editExerciseView.dart';
 class BlockView extends StatefulWidget {
   final int blockKey;
   final String id;
-  BlockView({Key key, @required this.blockKey, @required this.id})
+  final TrainingController trainingController;
+  BlockView(
+      {Key key,
+      @required this.blockKey,
+      @required this.id,
+      @required this.trainingController})
       : super(key: key);
 
   @override
@@ -29,6 +35,8 @@ class _BlockViewState extends State<BlockView> {
 
   @override
   Widget build(BuildContext context) {
+    BlockController blockController =
+        Provider.of<BlockController>(context, listen: false);
     block =
         Provider.of<BlockController>(context).blocksBox.get(widget.blockKey);
     ExerciseController _exerciseController =
@@ -36,6 +44,7 @@ class _BlockViewState extends State<BlockView> {
     exercises = block.exercises.toList();
     _setFocusItem();
     return Scaffold(
+      key: GlobalKey<ScaffoldState>(),
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -66,8 +75,11 @@ class _BlockViewState extends State<BlockView> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            EditBlockView(id: widget.blockKey, block: block)));
+                        builder: (context) => EditBlockView(
+                              id: widget.blockKey,
+                              block: block,
+                              trainingController: widget.trainingController,
+                            )));
               }),
         ],
       ),
@@ -117,6 +129,7 @@ class _BlockViewState extends State<BlockView> {
                                   builder: (context) => EditExerciseView(
                                         exercise: exercise,
                                         exerciseId: exercises[i],
+                                        blockController: blockController,
                                       )))
                         },
                       ),
@@ -138,9 +151,12 @@ class _BlockViewState extends State<BlockView> {
                               content: Text("Exercise deleted"),
                               action: SnackBarAction(
                                   label: "UNDO",
+                                  textColor: Theme.of(context).accentColor,
                                   onPressed: () {
                                     _exerciseController.addExercise(
-                                        context, exercise.title, exercise.desc);
+                                        blockController,
+                                        exercise.title,
+                                        exercise.desc);
                                   })));
                         },
                       ),

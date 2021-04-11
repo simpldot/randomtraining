@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
 import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
@@ -7,8 +8,12 @@ import 'package:randomtraining/shared/textStyles.dart';
 class EditExerciseView extends StatefulWidget {
   final Exercise exercise;
   final int exerciseId;
+  final BlockController blockController;
   const EditExerciseView(
-      {Key key, @required this.exercise, @required this.exerciseId})
+      {Key key,
+      @required this.exercise,
+      @required this.exerciseId,
+      @required this.blockController})
       : super(key: key);
 
   @override
@@ -53,6 +58,17 @@ class _EditExerciseViewState extends State<EditExerciseView> {
                   Provider.of<ExerciseController>(context, listen: false)
                       .removeExercise(context, widget.exerciseId);
                   Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Exercise deleted"),
+                      action: SnackBarAction(
+                          label: "UNDO",
+                          textColor: Theme.of(context).accentColor,
+                          onPressed: () {
+                            _exerciseController.addExercise(
+                                widget.blockController,
+                                exercise.title,
+                                exercise.desc);
+                          })));
                 }),
           ],
         ),
