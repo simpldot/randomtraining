@@ -26,11 +26,11 @@ class BlockController extends ChangeNotifier {
     return blocksBox.get(key);
   }
 
-  addBlock(BuildContext context, String title, String desc) async {
+  addBlock(TrainingController trainingController, String title, String desc,
+      List<int> exercises) async {
     Block newBlock = Block(title, desc, []);
     int key = await blocksBox.add(newBlock);
-    Provider.of<TrainingController>(context, listen: false)
-        .addBlockToTraining(key, currentTraining);
+    trainingController.addBlockToTraining(key, currentTraining);
     notifyListeners();
   }
 

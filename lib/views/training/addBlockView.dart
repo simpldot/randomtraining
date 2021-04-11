@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class AddBlockView extends StatefulWidget {
@@ -27,6 +28,8 @@ class _AddBlockViewState extends State<AddBlockView> {
   @override
   Widget build(BuildContext context) {
     BlockController _blockController = Provider.of<BlockController>(context);
+    TrainingController trainingController =
+        Provider.of<TrainingController>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -68,8 +71,8 @@ class _AddBlockViewState extends State<AddBlockView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _blockController.addBlock(
-                  context, titleController.text, descController.text);
+              _blockController.addBlock(trainingController,
+                  titleController.text, descController.text, []);
               Navigator.pop(context);
             }
           },

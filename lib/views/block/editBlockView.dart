@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class EditBlockView extends StatefulWidget {
   final int id;
   final Block block;
-  const EditBlockView({Key key, @required this.id, @required this.block})
+  final TrainingController trainingController;
+  const EditBlockView(
+      {Key key,
+      @required this.id,
+      @required this.block,
+      @required this.trainingController})
       : super(key: key);
 
   @override
@@ -38,7 +44,7 @@ class _EditBlockViewState extends State<EditBlockView> {
 
   @override
   Widget build(BuildContext context) {
-    BlockController _hiveController = Provider.of<BlockController>(context);
+    BlockController _blockController = Provider.of<BlockController>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -57,6 +63,15 @@ class _EditBlockViewState extends State<EditBlockView> {
                               .currentBlock);
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Exercise deleted"),
+                      action: SnackBarAction(
+                          label: "UNDO",
+                          textColor: Theme.of(context).accentColor,
+                          onPressed: () {
+                            _blockController.addBlock(widget.trainingController,
+                                block.title, block.desc, block.exercises);
+                          })));
                 }),
           ],
         ),
@@ -96,7 +111,7 @@ class _EditBlockViewState extends State<EditBlockView> {
             if (_formKey.currentState.validate()) {
               block.title = titleController.text;
               block.desc = descController.text;
-              _hiveController.updateBlock(widget.id, block);
+              _blockController.updateBlock(widget.id, block);
               Navigator.pop(context);
             }
           },

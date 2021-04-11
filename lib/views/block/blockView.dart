@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
+import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
@@ -13,7 +14,12 @@ import 'package:randomtraining/views/block/editExerciseView.dart';
 class BlockView extends StatefulWidget {
   final int blockKey;
   final String id;
-  BlockView({Key key, @required this.blockKey, @required this.id})
+  final TrainingController trainingController;
+  BlockView(
+      {Key key,
+      @required this.blockKey,
+      @required this.id,
+      @required this.trainingController})
       : super(key: key);
 
   @override
@@ -69,8 +75,11 @@ class _BlockViewState extends State<BlockView> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            EditBlockView(id: widget.blockKey, block: block)));
+                        builder: (context) => EditBlockView(
+                              id: widget.blockKey,
+                              block: block,
+                              trainingController: widget.trainingController,
+                            )));
               }),
         ],
       ),
