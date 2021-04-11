@@ -18,7 +18,8 @@ class TrainingController extends ChangeNotifier {
   _loadTrainings() async {
     trainingsBox = await Hive.openBox<Training>(_trainingsKey);
     settingsBox = await Hive.openBox('settings');
-    trainingsOrder = settingsBox.get(_trainingsOrderKey).toList() ?? [];
+    trainingsOrder = settingsBox.get(_trainingsOrderKey) ?? [];
+    trainingsOrder.toList();
   }
 
   List<int> getTrainingsOrder() {
