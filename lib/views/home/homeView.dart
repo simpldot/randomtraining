@@ -20,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     trainingController = Provider.of<TrainingController>(context);
-    List<int> trainingsKeys = trainingController.trainingsOrder;
+    List<int> trainingsKeys = trainingController.getTrainingsOrder();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
