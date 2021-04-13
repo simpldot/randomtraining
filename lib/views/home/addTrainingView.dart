@@ -69,8 +69,8 @@ class _AddTrainingViewState extends State<AddTrainingView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _hiveController.addTraining(
-                  titleController.text, descController.text);
+              _hiveController
+                  .addTraining(titleController.text, descController.text, []);
               Navigator.pop(context);
             }
           },

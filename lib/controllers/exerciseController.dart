@@ -22,10 +22,21 @@ class ExerciseController extends ChangeNotifier {
     return exerciseBox.get(key);
   }
 
-  addExercise(BuildContext context, String title, String desc) async {
+  addExercise(
+      BlockController blockController, String title, String desc) async {
     Exercise newExercise = Exercise(title, desc);
     int key = await exerciseBox.add(newExercise);
+    blockController.addExerciseToBlock(key, currentBlock);
+  }
+
+  removeExercise(BuildContext context, int key) {
+    exerciseBox.delete(key);
     Provider.of<BlockController>(context, listen: false)
-        .updateBlock(key, currentBlock);
+        .removeExercise(key, currentBlock);
+  }
+
+  void updateExercise(int exerciseId, Exercise exercise) {
+    exerciseBox.put(exerciseId, exercise);
+    notifyListeners();
   }
 }

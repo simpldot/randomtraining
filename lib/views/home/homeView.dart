@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
-import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/home/addTrainingView.dart';
 import 'package:randomtraining/views/home/trainingCard.dart';
@@ -16,12 +14,13 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<Training> trainings;
+  List<int> trainingsKeys;
+  TrainingController trainingController;
+
   @override
   Widget build(BuildContext context) {
-    Box trainingsBox = Provider.of<TrainingController>(context).trainingsBox;
-    trainings = trainingsBox.values.toList();
-    List<int> trainingsKeys = trainingsBox.keys.toList().cast<int>();
+    trainingController = Provider.of<TrainingController>(context);
+    List<int> trainingsKeys = trainingController.getTrainingsOrder();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -39,10 +38,21 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: ReorderableListView.builder(
-        onReorder: _onReorder,
-        itemCount: trainings.length,
-        itemBuilder: (context, i) =>
-            trainingCard(context, trainings[i], trainingsKeys[i]),
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (newIndex > oldIndex) {
+              newIndex -= 1;
+            }
+            var item = trainingsKeys.removeAt(oldIndex);
+            trainingsKeys.insert(newIndex, item);
+            trainingController.updateTrainingsOrder(trainingsKeys);
+          });
+        },
+        itemCount: trainingsKeys.length,
+        itemBuilder: (context, i) => trainingCard(
+            context,
+            trainingController.trainingsBox.get(trainingsKeys[i]),
+            trainingsKeys[i]),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -54,15 +64,5 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  void _onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
-      var item = trainings.removeAt(oldIndex);
-      trainings.insert(newIndex, item);
-    });
   }
 }

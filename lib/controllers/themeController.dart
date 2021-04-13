@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'themes.dart';
+import '../views/settings/themes.dart';
 
 class ThemeController extends ChangeNotifier {
   ThemeData _themeData;
   final _theme = 'theme';
+  String selectedTheme = 'defaultDark';
   Box theme;
 
   ThemeController() {
@@ -13,7 +14,7 @@ class ThemeController extends ChangeNotifier {
 
   void _loadTheme() async {
     theme = await Hive.openBox('settings');
-    String selectedTheme = theme.get(_theme) ?? 'defaultDark';
+    selectedTheme = theme.get(_theme) ?? 'defaultDark';
     _themeData = getThemeData(selectedTheme);
     notifyListeners();
   }
@@ -21,6 +22,7 @@ class ThemeController extends ChangeNotifier {
   getTheme() => _themeData;
 
   setTheme(String themeName) async {
+    selectedTheme = themeName;
     _themeData = getThemeData(themeName);
     theme.put(_theme, themeName);
     notifyListeners();

@@ -7,7 +7,7 @@ import 'package:randomtraining/models/block.dart';
 import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/models/training.dart';
 import 'views/home/homeView.dart';
-import 'views/settings/themeController.dart';
+import 'controllers/themeController.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

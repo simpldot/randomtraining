@@ -2,21 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
+import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
-class AddBlockView extends StatefulWidget {
-  const AddBlockView({Key key}) : super(key: key);
+class EditTrainingView extends StatefulWidget {
+  final int id;
+  final Training training;
+  const EditTrainingView({Key key, @required this.id, @required this.training})
+      : super(key: key);
 
   @override
-  _AddBlockViewState createState() => _AddBlockViewState();
+  _EditTrainingViewState createState() => _EditTrainingViewState(training);
 }
 
-class _AddBlockViewState extends State<AddBlockView> {
-  final titleController = TextEditingController();
+class _EditTrainingViewState extends State<EditTrainingView> {
+  TextEditingController titleController;
+  TextEditingController descController;
 
-  final descController = TextEditingController();
+  Training training;
 
   final _formKey = GlobalKey<FormState>();
+
+  _EditTrainingViewState(Training training) {
+    this.training = training;
+    titleController = TextEditingController(text: training.title);
+    descController = TextEditingController(text: training.desc);
+  }
 
   @override
   void dispose() {
@@ -27,15 +38,35 @@ class _AddBlockViewState extends State<AddBlockView> {
 
   @override
   Widget build(BuildContext context) {
-    BlockController _blockController = Provider.of<BlockController>(context);
-    TrainingController trainingController =
+    TrainingController _trainingController =
         Provider.of<TrainingController>(context);
     return Container(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text('new Block', style: heading),
+          title: Text('edit Training', style: heading),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  Provider.of<TrainingController>(context, listen: false)
+                      .removeTraining(
+                          Provider.of<BlockController>(context, listen: false)
+                              .currentTraining);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Training deleted"),
+                      action: SnackBarAction(
+                          label: "UNDO",
+                          textColor: Theme.of(context).accentColor,
+                          onPressed: () {
+                            _trainingController.addTraining(
+                                training.title, training.desc, training.blocks);
+                          })));
+                }),
+          ],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -71,13 +102,14 @@ class _AddBlockViewState extends State<AddBlockView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _blockController.addBlock(trainingController,
-                  titleController.text, descController.text, []);
+              training.title = titleController.text;
+              training.desc = descController.text;
+              _trainingController.updateTraining(widget.id, training);
               Navigator.pop(context);
             }
           },
-          label: Text('Add Block'),
-          icon: Icon(Icons.add),
+          label: Text('Save'),
+          icon: Icon(Icons.save),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/trainingController.dart';
 import 'package:randomtraining/models/training.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 import 'package:randomtraining/views/training/addBlockView.dart';
 import 'package:randomtraining/views/training/blockCard.dart';
+import 'package:randomtraining/views/training/editTrainingView.dart';
 
 class TrainingView extends StatefulWidget {
   final int trainingKey;
@@ -52,13 +52,13 @@ class _TrainingViewState extends State<TrainingView> {
         ),
         actions: [
           IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.edit),
               onPressed: () {
-                Provider.of<TrainingController>(context, listen: false)
-                    .removeTraining(
-                        Provider.of<BlockController>(context, listen: false)
-                            .currentTraining);
-                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditTrainingView(
+                            id: widget.trainingKey, training: training)));
               }),
         ],
       ),
@@ -89,7 +89,7 @@ class _TrainingViewState extends State<TrainingView> {
       blocks.insert(newIndex, item);
       training.blocks = blocks;
       Provider.of<TrainingController>(context, listen: false)
-          .saveBlockOrder(widget.trainingKey, training);
+          .updateTraining(widget.trainingKey, training);
     });
   }
 }

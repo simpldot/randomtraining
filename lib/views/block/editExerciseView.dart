@@ -2,21 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:randomtraining/controllers/blockController.dart';
 import 'package:randomtraining/controllers/exerciseController.dart';
+import 'package:randomtraining/models/exercise.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
-class AddExerciseView extends StatefulWidget {
-  const AddExerciseView({Key key}) : super(key: key);
+class EditExerciseView extends StatefulWidget {
+  final Exercise exercise;
+  final int exerciseId;
+  final BlockController blockController;
+  const EditExerciseView(
+      {Key key,
+      @required this.exercise,
+      @required this.exerciseId,
+      @required this.blockController})
+      : super(key: key);
 
   @override
-  _AddExerciseViewState createState() => _AddExerciseViewState();
+  _EditExerciseViewState createState() => _EditExerciseViewState(exercise);
 }
 
-class _AddExerciseViewState extends State<AddExerciseView> {
-  final titleController = TextEditingController();
+class _EditExerciseViewState extends State<EditExerciseView> {
+  TextEditingController titleController;
+  TextEditingController descController;
 
-  final descController = TextEditingController();
+  Exercise exercise;
 
   final _formKey = GlobalKey<FormState>();
+
+  _EditExerciseViewState(Exercise exercise) {
+    this.exercise = exercise;
+    titleController = TextEditingController(text: exercise.title);
+    descController = TextEditingController(text: exercise.desc);
+  }
 
   @override
   void dispose() {
@@ -29,14 +45,32 @@ class _AddExerciseViewState extends State<AddExerciseView> {
   Widget build(BuildContext context) {
     ExerciseController _exerciseController =
         Provider.of<ExerciseController>(context);
-    BlockController blockController =
-        Provider.of<BlockController>(context, listen: false);
     return Container(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text('new Exercise', style: heading),
+          title: Text('edit Exercise', style: heading),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  Provider.of<ExerciseController>(context, listen: false)
+                      .removeExercise(context, widget.exerciseId);
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Exercise deleted"),
+                      action: SnackBarAction(
+                          label: "UNDO",
+                          textColor: Theme.of(context).accentColor,
+                          onPressed: () {
+                            _exerciseController.addExercise(
+                                widget.blockController,
+                                exercise.title,
+                                exercise.desc);
+                          })));
+                }),
+          ],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -72,13 +106,14 @@ class _AddExerciseViewState extends State<AddExerciseView> {
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              _exerciseController.addExercise(
-                  blockController, titleController.text, descController.text);
+              exercise.title = titleController.text;
+              exercise.desc = descController.text;
+              _exerciseController.updateExercise(widget.exerciseId, exercise);
               Navigator.pop(context);
             }
           },
-          label: Text('Add Exercise'),
-          icon: Icon(Icons.add),
+          label: Text('Save'),
+          icon: Icon(Icons.save),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
