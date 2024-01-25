@@ -8,7 +8,7 @@ import 'package:randomtraining/shared/textStyles.dart';
 class EditTrainingView extends StatefulWidget {
   final int id;
   final Training training;
-  const EditTrainingView({Key key, @required this.id, @required this.training})
+  const EditTrainingView({Key key, required this.id, required this.training})
       : super(key: key);
 
   @override
@@ -60,7 +60,7 @@ class _EditTrainingViewState extends State<EditTrainingView> {
                       content: Text("Training deleted"),
                       action: SnackBarAction(
                           label: "UNDO",
-                          textColor: Theme.of(context).accentColor,
+                          textColor: Theme.of(context).colorScheme.secondary,
                           onPressed: () {
                             _trainingController.addTraining(
                                 training.title, training.desc, training.blocks);

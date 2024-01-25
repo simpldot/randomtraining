@@ -5,7 +5,7 @@ import 'package:randomtraining/controllers/exerciseController.dart';
 import 'package:randomtraining/shared/textStyles.dart';
 
 class AddExerciseView extends StatefulWidget {
-  const AddExerciseView({Key key}) : super(key: key);
+  const AddExerciseView({Key? key}) : super(key: key);
 
   @override
   _AddExerciseViewState createState() => _AddExerciseViewState();
@@ -51,7 +51,7 @@ class _AddExerciseViewState extends State<AddExerciseView> {
                     border: OutlineInputBorder(),
                   ),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value?.isEmpty ?? false) {
                       return 'Please enter a Title';
                     }
                     return null;
@@ -71,7 +71,7 @@ class _AddExerciseViewState extends State<AddExerciseView> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState?.validate() ?? false) {
               _exerciseController.addExercise(
                   blockController, titleController.text, descController.text);
               Navigator.pop(context);

@@ -16,10 +16,10 @@ class BlockView extends StatefulWidget {
   final String id;
   final TrainingController trainingController;
   BlockView(
-      {Key key,
-      @required this.blockKey,
-      @required this.id,
-      @required this.trainingController})
+      {Key? key,
+      required this.blockKey,
+      required this.id,
+      required this.trainingController})
       : super(key: key);
 
   @override
@@ -27,10 +27,10 @@ class BlockView extends StatefulWidget {
 }
 
 class _BlockViewState extends State<BlockView> {
-  int focusItem;
+  int? focusItem;
 
-  Block block;
-  List<int> exercises;
+  Block? block;
+  List<int>? exercises;
   List<int> checkedList = [];
 
   @override
@@ -41,7 +41,7 @@ class _BlockViewState extends State<BlockView> {
         Provider.of<BlockController>(context).blocksBox.get(widget.blockKey);
     ExerciseController _exerciseController =
         Provider.of<ExerciseController>(context);
-    exercises = block.exercises.toList();
+    exercises = block?.exercises.toList();
     _setFocusItem();
     return Scaffold(
       key: GlobalKey<ScaffoldState>(),
@@ -52,16 +52,16 @@ class _BlockViewState extends State<BlockView> {
         title: Column(
           children: [
             Hero(
-              tag: block.title,
+              tag: block!.title,
               child: Material(
-                child: Text(block.title, style: heading),
+                child: Text(block!.title, style: heading),
               ),
             ),
             Hero(
-              tag: block.desc,
+              tag: block!.desc,
               child: Material(
                 child: Text(
-                  block.desc,
+                  block!.desc,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                 ),
               ),
@@ -77,7 +77,7 @@ class _BlockViewState extends State<BlockView> {
                     MaterialPageRoute(
                         builder: (context) => EditBlockView(
                               id: widget.blockKey,
-                              block: block,
+                              block: block!,
                               trainingController: widget.trainingController,
                             )));
               }),
@@ -85,7 +85,7 @@ class _BlockViewState extends State<BlockView> {
       ),
       body: ListView.builder(
           padding: EdgeInsets.only(top: 8),
-          itemCount: exercises.length,
+          itemCount: exercises?.length,
           itemBuilder: (context, i) {
             Exercise exercise = _exerciseController.getExercise(exercises[i]);
             return Padding(
@@ -151,7 +151,8 @@ class _BlockViewState extends State<BlockView> {
                               content: Text("Exercise deleted"),
                               action: SnackBarAction(
                                   label: "UNDO",
-                                  textColor: Theme.of(context).accentColor,
+                                  textColor:
+                                      Theme.of(context).colorScheme.secondary,
                                   onPressed: () {
                                     _exerciseController.addExercise(
                                         blockController,

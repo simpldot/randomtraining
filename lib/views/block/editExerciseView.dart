@@ -11,9 +11,9 @@ class EditExerciseView extends StatefulWidget {
   final BlockController blockController;
   const EditExerciseView(
       {Key key,
-      @required this.exercise,
-      @required this.exerciseId,
-      @required this.blockController})
+      required this.exercise,
+      required this.exerciseId,
+      required this.blockController})
       : super(key: key);
 
   @override
@@ -62,7 +62,7 @@ class _EditExerciseViewState extends State<EditExerciseView> {
                       content: Text("Exercise deleted"),
                       action: SnackBarAction(
                           label: "UNDO",
-                          textColor: Theme.of(context).accentColor,
+                          textColor: Theme.of(context).colorScheme.secondary,
                           onPressed: () {
                             _exerciseController.addExercise(
                                 widget.blockController,

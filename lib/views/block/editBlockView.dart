@@ -12,9 +12,9 @@ class EditBlockView extends StatefulWidget {
   final TrainingController trainingController;
   const EditBlockView(
       {Key key,
-      @required this.id,
-      @required this.block,
-      @required this.trainingController})
+      required this.id,
+      required this.block,
+      required this.trainingController})
       : super(key: key);
 
   @override
@@ -67,7 +67,7 @@ class _EditBlockViewState extends State<EditBlockView> {
                       content: Text("Block deleted"),
                       action: SnackBarAction(
                           label: "UNDO",
-                          textColor: Theme.of(context).accentColor,
+                          textColor: Theme.of(context).colorScheme.secondary,
                           onPressed: () {
                             _blockController.addBlock(widget.trainingController,
                                 block.title, block.desc, block.exercises);

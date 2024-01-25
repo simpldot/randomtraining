@@ -5,21 +5,41 @@ ThemeData _getThemeData(Brightness brightness, Color primaryColor,
   return ThemeData(
       brightness: brightness,
       primaryColor: primaryColor,
-      accentColor: primaryColor,
       canvasColor: Colors.transparent,
       scaffoldBackgroundColor: backgroundColor,
-      backgroundColor: backgroundColor,
-      primaryTextTheme: TextTheme(headline6: TextStyle(color: textColor)),
+      primaryTextTheme: TextTheme(titleLarge: TextStyle(color: textColor)),
       primaryIconTheme: IconThemeData(
         color: textColor,
       ),
-      toggleableActiveColor: primaryColor,
       cardColor: cardColor,
       snackBarTheme: SnackBarThemeData(
         backgroundColor: cardColor,
         contentTextStyle: TextStyle(color: textColor),
         actionTextColor: textColor,
-      ));
+      ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: primaryColor), checkboxTheme: CheckboxThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor; }
+ return null;
+ }),
+ ), radioTheme: RadioThemeData(
+ fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor; }
+ return null;
+ }),
+ ), switchTheme: SwitchThemeData(
+ thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor; }
+ return null;
+ }),
+ trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+ if (states.contains(MaterialState.disabled)) { return null; }
+ if (states.contains(MaterialState.selected)) { return primaryColor; }
+ return null;
+ }),
+ ), colorScheme: ColorScheme(background: backgroundColor));
 }
 
 ThemeData getThemeData(String themeName) {

@@ -45,7 +45,7 @@ class _SettingsViewState extends State<SettingsView> {
               children: [
                 for (String theme in themes)
                   Container(
-                    color: getThemeData(theme).backgroundColor,
+                    color: getThemeData(theme).colorScheme.background,
                     child: Icon(
                       Icons.stop_rounded,
                       size: 50,
